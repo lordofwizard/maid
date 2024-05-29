@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    volumes:
+      - ./jellyfin/config:/config
+      - ./jellyfin/cache:/cache
+      - ./media/tv_shows:/media/tv_shows
+      - ./media/movies:/media/movies
+    ports:
+      - "8096:8096"
+    networks:
+      - media_network
+
+  pihole:
+    image: pihole/pihole
+    container_name: pihole
+    environment:
+      TZ: 'America/Chicago'
+      WEBPASSWORD: 'yourpassword'
+    volumes:
+      - ./pihole/etc-pihole:/etc/pihole
+      - ./pihole/etc-dnsmasq.d:/etc/dnsmasq.d
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "80:80/tcp"
+      - "443:443/tcp"
+    networks:
+      - media_network
+
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Chicago
+    volumes:
+      - ./heimdall/config:/config
+    ports:
+      - 8000:80
+      - 443:443
+    networks:
+      - media_network
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - media_network
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=yourpassword
+    volumes:
+      - ./grafana:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - media_network
+
+networks:
+  media_network:
+    driver: bridge
