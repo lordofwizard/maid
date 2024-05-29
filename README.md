@@ -10,7 +10,7 @@ It includes Jellyfin for media streaming, Pi-hole for network-wide ad blocking, 
 2. [Priyal Kalal](https://www.linkedin.com/in/priyal-kalal-307900250/)
 3. [Kedar Nanaware](https://www.linkedin.com/in/kedar-nanaware-7264942b6/)
 4. Nitin Pawar
-5. Nikhil Pawar
+5. [Nikhil Pawar](https://www.linkedin.com/in/nikhil-pawar-703123233/)
 
 ## Table of Contents
 1. [Project Structure](#project-structure)
